@@ -12,21 +12,65 @@ public class BoleraK {
     /**
      * @param args the command line arguments
      */
-    public static void Tablero(int i, int[][] jugador[]) {
+    public static void casosEspeciales(int i, int[][] jugador[], int[] frame10[], int spare) {
+        for (int t = 0; t < 10; t++) {
+            for (int l = 0; l < 2; l++) {
+                //casos especiales
+                //frame10
+                if (jugador[i][8][0] == 20) {
+                    jugador[i][8][0] += frame10[i][0];
+                }
+                if (jugador[i][9][0] == 10 && frame10[i][0] == 10) {
+                    jugador[i][9][0] = 30;
+
+                }else if(jugador[i][9][0] + jugador[i][9][1] == 10){
+                jugador[i][9][1] += frame10[i][0];
+                }
+                //strike
+                if ((jugador[i][t][l] == 10) && (l == 0 && t + 1 < 10)) {
+                    jugador[i][t][l] += jugador[i][t + 1][0];
+                } else if (jugador[i][t][l] == 20 && (t + 2 <= 10)) {
+                    jugador[i][t][l] += jugador[i][t + 2][0];
+                } 
+                //spare
+                if (jugador[i][t][0] + jugador[i][t][1] == 10 && (t + 1 < 10)) {
+                    spare = jugador[i][t + 1][0];
+                    jugador[i][t][1] += spare;
+                }
+
+            }
+        }
+    }
+
+    public static void Tablero(int i, int[][] jugador[], int[] frame10[]) {
         System.out.println("Tablero Jugador " + (i + 1) + " :");
         adorno();
-        for (int[] j : jugador[i]) {
-
-            for (int x : j) {
-                if (x >= 10) {
-                    System.out.print("x |");
-                } else {
-                    System.out.print(x + " | ");
-                }
-            }
-
+        System.out.println("-----------------------------------------------------------------------------------");
+        for (int t = 0; t < 10; t++){
+        System.out.print("Turno:" + (t+1) + "|");
+            
         }
         System.out.println("");
+        System.out.println("-----------------------------------------------------------------------------------");
+        System.out.print(" ");
+        for (int t = 0; t < 10; t++) {
+            
+            for (int l = 0; l < 2; l++) {
+                if (jugador[i][t][l] >= 10 && l == 0) {
+                    System.out.print("x | ");
+                } else if ((l != 0 && jugador[i][t][l - 1] < 10) && (jugador[i][t][l - 1] + jugador[i][t][l] >= 10)) {
+                    System.out.print("/ | ");
+                } else {
+                    System.out.print(jugador[i][t][l] + " | ");
+                }
+            }
+        }
+        if (frame10[i][0] > 0) {
+
+            System.out.println(" ::: " + frame10[i][0] + " ::: ");
+        }
+        System.out.println("");
+
     }
 
     public static int Sumatoria(int i, int[][] jugador[]) {
@@ -34,8 +78,11 @@ public class BoleraK {
         for (int[] j : jugador[i]) {
             for (int x : j) {
                 suma += x;
+                if (x == 10) {
+                }
             }
         }
+
         return suma;
     }
 
@@ -60,11 +107,13 @@ public class BoleraK {
     public static void main(String[] args) {
         int[][][] jugador = new int[2][10][2];
         Scanner sc = new Scanner(System.in);
+        int[][] frame10 = new int[2][1];
+        int spare = 00;
 
         int lanzamiento = 0;
 
-        while (lanzamiento < 5) {
-            for (int i = 0; i <= 0; i++) {
+        while (lanzamiento < 10) {
+            for (int i = 0; i < 1; i++) {
                 turno(lanzamiento);
                 System.out.println("Jugador:  ||" + (i + 1) + "|| es tu turno!");
                 adorno();
@@ -77,18 +126,29 @@ public class BoleraK {
                     jugador[i][lanzamiento][0] = turno1;
                     System.out.println("Ingrese puntos para segundo lanzamiento:");
                     int turno2 = sc.nextInt();
-                    if (turno2 >= 10) {
-                        jugador[i][lanzamiento][1] = 10;
+                    if (turno1 + turno2 >= 10) {
+                        jugador[i][lanzamiento][1] = 10 - turno1;
                     } else {
                         jugador[i][lanzamiento][1] = turno2;
                     }
-                    
+
+                }
+                
+                 //Para prueba 
+                 Tablero(i, jugador, frame10);
+                casosEspeciales(i, jugador, frame10, spare); System.out.println("Puntaje total: " + Sumatoria(i, jugador));
+               
+                adorno();
+                if (jugador[i][9][0] + jugador[i][9][1] >= 10) {
+                    System.out.println("Tienes una bola adicional!");
+                    System.out.println("Ingrese puntos para bola adicional");
+                    int bolaAdicional = sc.nextInt();
+                    frame10[i][0] = bolaAdicional;
+
+                    casosEspeciales(i, jugador, frame10, spare);
                 }
 
-                Tablero(i, jugador);
-                adorno();
-                //Aquí hay que rastrear el valor de la moñona
-                
+                Tablero(i, jugador, frame10);
                 System.out.println("Puntaje total: " + Sumatoria(i, jugador));
                 limpiar(1);
             }
