@@ -23,15 +23,15 @@ public class BoleraK {
                 if (jugador[i][9][0] == 10 && frame10[i][0] == 10) {
                     jugador[i][9][0] = 30;
 
-                }else if(jugador[i][9][0] + jugador[i][9][1] == 10){
-                jugador[i][9][1] += frame10[i][0];
+                } else if (jugador[i][9][0] + jugador[i][9][1] == 10) {
+                    jugador[i][9][1] += frame10[i][0];
                 }
                 //strike
                 if ((jugador[i][t][l] == 10) && (l == 0 && t + 1 < 10)) {
                     jugador[i][t][l] += jugador[i][t + 1][0];
                 } else if (jugador[i][t][l] == 20 && (t + 2 <= 10)) {
                     jugador[i][t][l] += jugador[i][t + 2][0];
-                } 
+                }
                 //spare
                 if (jugador[i][t][0] + jugador[i][t][1] == 10 && (t + 1 < 10)) {
                     spare = jugador[i][t + 1][0];
@@ -42,19 +42,47 @@ public class BoleraK {
         }
     }
 
+    public static void imagen() {
+        adorno();
+        System.out.println("Bowling Konrad 1.0");      
+        adorno();
+
+        System.out.println("                      `-`  ");
+        System.out.println("               .`     ++:.`    `` ");
+        System.out.println("   `    -.    :/-` `  +o/-``  `/:``   .`");
+        System.out.println("  ./.` `o:.`` :+:.``  :o/:..  :+/-`` ./-`` -.");
+        System.out.println("  .o:.` +/-.` .s+:-.  `yys+/  ++o/:- `+:.. ::.` ");
+        System.out.println("  so+. +s+/   so/::   o+:.`  /oo/:-  +o/: .o/:  ");
+        System.out.println("  o+:` /o/-   so:-.   ys+:-  :os+:.  /o:. `o:.");
+        System.out.println("  .+:.``//.`  -+:.``  -/-`    :/:.`  `:-`` .:.`");
+        System.out.println(" .//:..//:-``-/:-.   ./:.`   .::.`   --``  -.`  ");
+        System.out.println(".+//::+/:::.-+/:--``.+:-.``  `:-.`   `.``  ````   ");
+        System.out.println("/+///++/:::/+//::-..+/:-..``  `-.```  ````` ``` ``");
+        System.out.println(";/+///o+/://++//::::/+/:--.```  ...``` `.`````.````");
+        System.out.println(".o+/+++////++///:::++/:--..``` ....````...``.....`");
+        System.out.println(" /o+++o+///+o////::++/:--...```.....``......:-... ");
+        System.out.println(" `+so+/o++++++////:/+/:--...```-....`.:-..../::- ");
+        System.out.println("   ``  /oo+/`oo+///:+/:---..``-:-....`//::. ");
+        System.out.println("             .ssoo/.-+:---....`+/::-.  ");
+        System.out.println("              `...`  //:-....`  ...`  ");
+        System.out.println("                    `++/::-.   ");
+        System.out.println("                       `..`   ") ;                   
+
+    }
+
     public static void Tablero(int i, int[][] jugador[], int[] frame10[]) {
         System.out.println("Tablero Jugador " + (i + 1) + " :");
         adorno();
         System.out.println("-----------------------------------------------------------------------------------");
-        for (int t = 0; t < 10; t++){
-        System.out.print("Turno:" + (t+1) + "|");
-            
+        for (int t = 0; t < 10; t++) {
+            System.out.print("Turno:" + (t + 1) + "|");
+
         }
         System.out.println("");
         System.out.println("-----------------------------------------------------------------------------------");
         System.out.print(" ");
         for (int t = 0; t < 10; t++) {
-            
+
             for (int l = 0; l < 2; l++) {
                 if (jugador[i][t][l] >= 10 && l == 0) {
                     System.out.print("x | ");
@@ -109,7 +137,8 @@ public class BoleraK {
         Scanner sc = new Scanner(System.in);
         int[][] frame10 = new int[2][1];
         int spare = 00;
-
+        imagen();    
+        
         int lanzamiento = 0;
 
         while (lanzamiento < 10) {
@@ -133,11 +162,12 @@ public class BoleraK {
                     }
 
                 }
+
                 
-                 //Para prueba 
-                 Tablero(i, jugador, frame10);
-                casosEspeciales(i, jugador, frame10, spare); System.out.println("Puntaje total: " + Sumatoria(i, jugador));
-               
+                //Para prueba Tablero(i, jugador, frame10);
+                casosEspeciales(i, jugador, frame10, spare);
+                System.out.println("Puntaje total: " + Sumatoria(i, jugador));
+
                 adorno();
                 if (jugador[i][9][0] + jugador[i][9][1] >= 10) {
                     System.out.println("Tienes una bola adicional!");
